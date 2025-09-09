@@ -1,6 +1,11 @@
+import pytest
+
 from pages.home_page import HomePage
 from pages.products.product_details_page import ProductDetailsPage
 from pages.products.products_page import ProductsPage
+from steps.home_page_steps import HomePageSteps
+from steps.products.product_details_page_steps import ProductDetailsPageSteps
+from steps.products.products_page_steps import ProductsPageSteps
 
 
 class TestProducts:
@@ -46,3 +51,67 @@ class TestProducts:
         product_details_page.product_information_component.check_availability_text('In Stock')
         product_details_page.product_information_component.check_condition_text('New')
         product_details_page.product_information_component.check_brand_text('Polo')
+
+    def test_add_review_on_product(self, products_page: ProductsPage, product_details_page: ProductDetailsPage):
+        products_page.open()
+        products_page.list_of_product_cards_component.check_title('All Products')
+        products_page.list_of_product_cards_component.product_card_component.click_view_product_button(product_id=1)
+
+        product_details_page.is_open(product_id=1)
+        product_details_page.product_review_form_component.check_write_your_review_text()
+
+        product_details_page.product_review_form_component.fill_fields(
+            name='Bogdan',
+            email='user@mail.ru',
+            review='Good quality top'
+        )
+        product_details_page.product_review_form_component.click_submit()
+        product_details_page.product_review_form_component.check_thank_you_alert()
+
+    def test_all_product_list_2(
+            self,
+            home_page_steps: HomePageSteps,
+            products_page_steps: ProductsPageSteps
+    ):
+        home_page_steps.open_page()
+        home_page_steps.navbar.go_products()
+
+        products_page_steps.is_open_page()
+        products_page_steps.verify_all_product_cards()
+
+    @pytest.mark.parametrize('product_id', [1])
+    def test_product_details_2(
+            self,
+            products_page_steps: ProductsPageSteps,
+            product_details_page_steps: ProductDetailsPageSteps,
+            product_id: int
+    ):
+        products_page_steps.open_page()
+        products_page_steps.view_product_details(product_id=product_id)
+
+        product_details_page_steps.is_open_page(product_id=product_id)
+        product_details_page_steps.verify_product_details_displayed(
+            product_name='Blue Top',
+            category='Women > Tops',
+            price=500,
+            availability='In Stock',
+            condition='New',
+            brand='Polo'
+        )
+
+    @pytest.mark.parametrize('product_id', [1])
+    def test_add_review_on_product_2(
+            self,
+            products_page_steps: ProductsPageSteps,
+            product_details_page_steps: ProductDetailsPageSteps,
+            product_id: int
+    ):
+        products_page_steps.open_page()
+        products_page_steps.view_product_details(product_id=product_id)
+
+        product_details_page_steps.is_open_page(product_id=product_id)
+        product_details_page_steps.write_and_submit_review(
+            name='Bogdan',
+            email='user@mail.ru',
+            review='Good quality top'
+        )

@@ -4,13 +4,14 @@ from components.base_component import BaseComponent
 from elements.clickable.button import Button
 from elements.fields.input import Input
 from elements.static.text import Text
+from elements.static.title import Title
 
 
 class SignupFormComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self._title = Text(page, '//div[@class="signup-form"]/h2', 'Title')
+        self._title = Title(page, '//div[@class="signup-form"]/h2', 'Title')
 
         self._name_input = Input(page, '//input[@data-qa="signup-name"]', 'Name')
         self._email_input = Input(page, '//input[@data-qa="signup-email"]', 'Email')
@@ -34,7 +35,7 @@ class SignupFormComponent(BaseComponent):
         self._signup_button.check_visible()
         self._signup_button.check_have_text('Signup')
 
-    def check_incorrect_inputs_text(self):
+    def check_incorrect_inputs_alert(self):
         self._incorrect_inputs_alert.check_visible()
         self._incorrect_inputs_alert.check_have_text('Email Address already exist!')
 
@@ -47,19 +48,13 @@ class SignupFormComponent(BaseComponent):
         self.check_fields(name, email)
 
         if incorrect_email_text_visible:
-            self.check_incorrect_inputs_text()
+            self.check_incorrect_inputs_alert()
 
         self.check_signup_button()
 
     def fill_fields(self, name: str, email: str):
-        self._name_input.check_visible()
         self._name_input.fill(name)
-        self._name_input.check_have_value(name)
-
-        self._email_input.check_visible()
         self._email_input.fill(email)
-        self._email_input.check_have_value(email)
 
     def click_signup_button(self):
-        self._signup_button.check_visible()
         self._signup_button.click()

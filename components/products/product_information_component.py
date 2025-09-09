@@ -5,13 +5,14 @@ from elements.clickable.button import Button
 from elements.media.image import Image
 from elements.fields.input import Input
 from elements.static.text import Text
+from elements.static.title import Title
 
 
 class ProductInformationComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self._product_name_title = Text(page, '//div[@class="product-information"]/h2', 'Product Title')
+        self._product_name_title = Title(page, '//div[@class="product-information"]/h2', 'Product Title')
         self._category_text = Text(
             page, '(//div[@class="product-information"]//p)[1]', 'Category'
         )
@@ -31,11 +32,11 @@ class ProductInformationComponent(BaseComponent):
         self._add_to_cart_button = Button(page, '//div[@class="product-information"]//button', 'Add To Cart')
 
     # --- Checks ---
-    def check_product_name_title(self, product_name: str | None = None):
+    def check_product_name_title(self, name: str | None = None):
         self._product_name_title.check_visible()
 
-        if product_name:
-            self._product_name_title.check_have_text(product_name)
+        if name:
+            self._product_name_title.check_have_text(name)
 
     def check_category_text(self, category: str | None = None):
         self._category_text.check_visible()
@@ -82,11 +83,11 @@ class ProductInformationComponent(BaseComponent):
             self,
             product_name: str | None = None,
             category: str | None = None,
-            price: str | None = None,
+            price: int | None = None,
             availability: str | None = None,
             condition: str | None = None,
             brand: str | None = None,
-            quantity: int = 1,
+            quantity: int = 1
     ):
         self.check_product_name_title(product_name)
         self.check_category_text(category)
@@ -100,10 +101,7 @@ class ProductInformationComponent(BaseComponent):
 
     # --- Actions ---
     def fill_fields(self, quantity: int):
-        self._quantity_input.check_visible()
         self._quantity_input.fill(str(quantity))
-        self._quantity_input.check_have_value(str(quantity))
 
     def click_add_to_cart_button(self):
-        self._add_to_cart_button.check_visible()
         self._add_to_cart_button.click()

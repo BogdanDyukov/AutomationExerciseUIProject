@@ -24,10 +24,7 @@ class SearchFieldComponent(BaseComponent):
         self.check_submit_button()
 
     def fill_fields(self, search_query: str):
-        self._search_input.check_visible()
         self._search_input.fill(search_query)
-        self._search_input.check_have_value(search_query)
 
     def click_submit_button(self):
-        self._submit_button.check_visible()
         self._submit_button.click()

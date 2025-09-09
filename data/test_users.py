@@ -1,54 +1,41 @@
-from models.test_user import TestUser, Title, DateOfBirth, AddressInformation, AccountInformation
-from config.settings import settings
+import random
 
-new_test_user = TestUser(
-    account_information=AccountInformation(
-        title=Title.MR,
-        name=settings.new_test_user_username,
-        email=settings.new_test_user_email,
-        password=settings.new_test_user_password
-    ),
-    date_of_birth=DateOfBirth(
-        birth_date="15",
-        birth_month="8",
-        birth_year="1990"
-    ),
-    address_information=AddressInformation(
-        firstname="John",
-        lastname="Doe",
-        company="Acme Corp",
-        address1="123 Main St",
-        address2="Apt 4",
-        country="United States",
-        state="NY",
-        city="New York",
-        zipcode="10001",
-        mobile_number="1234567890"
-    )
-)
+from faker import Faker
 
-authorized_test_user = TestUser(
-    account_information=AccountInformation(
-        title=Title.MR,
-        name=settings.authorized_test_user_username,
-        email=settings.authorized_test_user_email,
-        password=settings.authorized_test_user_password
-    ),
-    date_of_birth=DateOfBirth(
-        birth_date="15",
-        birth_month="8",
-        birth_year="1990"
-    ),
-    address_information=AddressInformation(
-        firstname="John",
-        lastname="Doe",
-        company="Acme Corp",
-        address1="123 Main St",
-        address2="Apt 4",
-        country="United States",
-        state="NY",
-        city="New York",
-        zipcode="10001",
-        mobile_number="1234567890"
+from models.test_user import TestUser, Gender, DateOfBirth, AddressInformation, AccountInformation
+from tools.counter import get_unique_id
+
+fake = Faker()
+
+
+def get_test_user() -> TestUser:
+    unique_id = get_unique_id()
+    fake_birth = fake.date_of_birth()
+
+    return TestUser(
+        account_information=AccountInformation(
+            gender=random.choice([Gender.MR, Gender.MRS]),
+            name=fake.user_name(),
+            email=f"user{unique_id}.name@gmail.com",
+            password=fake.password(length=8)
+        ),
+        date_of_birth=DateOfBirth(
+            birth_date=str(fake_birth.day),
+            birth_month=str(fake_birth.month),
+            birth_year=str(fake_birth.year)
+        ),
+        address_information=AddressInformation(
+            firstname=fake.first_name(),
+            lastname=fake.last_name(),
+            company=fake.company(),
+            address1=fake.address(),
+            address2=fake.address(),
+            country=random.choice(
+                ['India', 'United States', 'Canada', 'Australia', 'Israel', 'New Zealand', 'Singapore']
+            ),
+            state=fake.state(),
+            city=fake.city(),
+            zipcode=fake.zipcode(),
+            mobile_number=fake.phone_number()
+        )
     )
-)

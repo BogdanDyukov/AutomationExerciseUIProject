@@ -1,5 +1,6 @@
 pytest_plugins = (
     "fixtures.browsers",
-    "fixtures.pages",
-    "fixtures.session_user"
+    "fixtures.pages_setup",
+    "fixtures.steps_setup",
+    "fixtures.users"
 )

@@ -21,7 +21,7 @@ class NavbarComponent(BaseComponent):
         self._logout_link = Link(page, '//a[@href="/logout"]', 'Logout')
         self._delete_account_link = Link(page, '//a[@href="/delete_account"]', 'Delete Account')
 
-        self._logged_in_user_label = Text(page, '//a[text()=" Logged in as "]', 'Logged In User')
+        self._logged_in_user_text = Text(page, '//a[text()=" Logged in as "]', 'Logged In User')
 
     def check_logo_link(self):
         self._logo_link.check_visible()
@@ -66,9 +66,9 @@ class NavbarComponent(BaseComponent):
         self._delete_account_link.check_visible()
         self._delete_account_link.check_have_text(' Delete Account')
 
-    def check_logged_in_user_label(self, username: str):
-        self._logged_in_user_label.check_visible()
-        self._logged_in_user_label.check_have_text(f' Logged in as {username}')
+    def check_logged_in_user_text(self, username: str):
+        self._logged_in_user_text.check_visible()
+        self._logged_in_user_text.check_have_text(f' Logged in as {username}')
 
     def _check_shared_links(self):
         self.check_logo_link()
@@ -91,44 +91,34 @@ class NavbarComponent(BaseComponent):
         self.check_logout_link()
         self.check_delete_account_link()
 
-        self.check_logged_in_user_label(username)
+        self.check_logged_in_user_text(username)
 
     def click_home_link(self):
-        self._home_link.check_visible()
         self._home_link.click()
 
     def click_products_link(self):
-        self._products_link.check_visible()
         self._products_link.click()
 
     def click_cart_link(self):
-        self._cart_link.check_visible()
         self._cart_link.click()
 
     def click_test_cases_link(self):
-        self._test_cases_link.check_visible()
         self._test_cases_link.click()
 
     def click_api_testing_link(self):
-        self._api_testing_link.check_visible()
         self._api_testing_link.click()
 
     def click_video_tutorials_link(self):
-        self._video_tutorials_link.check_visible()
         self._video_tutorials_link.click()
 
     def click_contact_us_link(self):
-        self._contact_us_link.check_visible()
         self._contact_us_link.click()
 
     def click_signup_or_login_link(self):
-        self._signup_or_login_link.check_visible()
         self._signup_or_login_link.click()
 
     def click_logout_link(self):
-        self._logout_link.check_visible()
         self._logout_link.click()
 
     def click_delete_account_link(self):
-        self._delete_account_link.check_visible()
         self._delete_account_link.click()

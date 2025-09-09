@@ -3,6 +3,7 @@ from playwright.sync_api import Page
 from components.navigation.navbar_component import NavbarComponent
 from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from elements.static.text import Text
+from elements.static.title import Title
 from pages.base.base_page import BasePage
 from config.routes import AppRoute
 
@@ -16,7 +17,7 @@ class TestCasesPage(BasePage):
         self.navbar_component: NavbarComponent = NavbarComponent(page)
         self.subscribe_to_updates_component: SubscribeToUpdatesComponent = SubscribeToUpdatesComponent(page)
 
-        self._title = Text(page, '//h2[contains(., "Test Cases")]', 'Title')
+        self._title = Title(page, '//h2[contains(., "Test Cases")]', 'Title')
         self._description_text = Text(page, '//span[contains(text(), "Below is the")]', 'Description')
 
     def check_title(self):

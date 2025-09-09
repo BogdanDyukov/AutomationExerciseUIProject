@@ -2,13 +2,14 @@ from playwright.sync_api import Page, expect
 
 from components.base_component import BaseComponent
 from elements.static.text import Text
+from elements.static.title import Title
 
 
 class ContactInfoComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self._title = Text(page, '//h2[text()="Feedback For Us"]', 'Title')
+        self._title = Title(page, '//h2[text()="Feedback For Us"]', 'Title')
         self._note_text = Text(page, '(//address/p)[1]', 'Note')
         self._instructions_text = Text(page, '(//address/p)[2]', 'Instructions')
         self._improvement_suggestion_text = Text(page, '(//address/p)[3]', 'Improvement Suggestion')

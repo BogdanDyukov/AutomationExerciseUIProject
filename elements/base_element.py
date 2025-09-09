@@ -1,5 +1,3 @@
-from typing import Pattern
-
 from playwright.sync_api import Page, Locator, expect
 
 
@@ -21,10 +19,14 @@ class BaseElement:
         locator = self.get_locator(nth, **kwargs)
         expect(locator).to_be_visible()
 
+    def check_have_text(self, text: str, nth: int = 0, **kwargs):
+        locator = self.get_locator(nth, **kwargs)
+        expect(locator).to_have_text(text)
+
     def click(self, nth: int = 0, **kwargs):
         locator = self.get_locator(nth, **kwargs)
         locator.click()
 
-    def check_have_text(self, text: str, nth: int = 0, **kwargs):
+    def scroll_into_element(self, nth: int = 0, **kwargs):
         locator = self.get_locator(nth, **kwargs)
-        expect(locator).to_have_text(text)
+        locator.scroll_into_view_if_needed()

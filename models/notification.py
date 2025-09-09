@@ -4,5 +4,5 @@ from dataclasses import dataclass
 @dataclass
 class Notification:
     title: str
-    main: str
-    additional: str
+    main_text: str
+    additional_text: str | None

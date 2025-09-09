@@ -4,6 +4,7 @@ from components.base_component import BaseComponent
 from elements.clickable.button import Button
 from elements.media.image import Image
 from elements.static.text import Text
+from elements.static.title import Title
 
 
 class ProductCardComponent(BaseComponent):
@@ -11,7 +12,7 @@ class ProductCardComponent(BaseComponent):
         super().__init__(page)
 
         self._product_image = Image(page, '//img[@src="/get_product_picture/{product_id}"]', 'Product')
-        self._price_title = Text(
+        self._price_title = Title(
             page, '(//a[@data-product-id="{product_id}"]/preceding-sibling::h2)[1]', 'Price Title'
         )
         self._product_name_text = Text(
@@ -57,9 +58,7 @@ class ProductCardComponent(BaseComponent):
         self.check_view_product_button(product_id)
 
     def click_add_to_cart_button(self, product_id: int):
-        self._add_to_cart_button.check_visible(product_id=product_id)
         self._add_to_cart_button.click(product_id=product_id)
 
     def click_view_product_button(self, product_id: int):
-        self._view_product_button.check_visible(product_id=product_id)
         self._view_product_button.click(product_id=product_id)

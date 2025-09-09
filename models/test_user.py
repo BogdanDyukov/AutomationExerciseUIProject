@@ -3,13 +3,13 @@ from enum import Enum
 from pydantic import BaseModel, EmailStr
 
 
-class Title(str, Enum):
-    MR = "mr"
-    MRS = "mrs"
+class Gender(str, Enum):
+    MR = "Mr"
+    MRS = "Mrs"
 
 
 class AccountInformation(BaseModel):
-    title: Title
+    gender: Gender
     name: str
     email: EmailStr
     password: str

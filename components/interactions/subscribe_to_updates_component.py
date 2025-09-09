@@ -4,13 +4,14 @@ from components.base_component import BaseComponent
 from elements.clickable.button import Button
 from elements.fields.input import Input
 from elements.static.text import Text
+from elements.static.title import Title
 
 
 class SubscribeToUpdatesComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self._title = Text(page, '//h2[text()="Subscription"]', 'Title')
+        self._title = Title(page, '//h2[text()="Subscription"]', 'Title')
         self._note_text = Text(page, '//p[contains(text(), "Get the most")]', 'Note')
 
         self._email_input = Input(page, '//input[@id="susbscribe_email"]', 'Email')
@@ -51,10 +52,7 @@ class SubscribeToUpdatesComponent(BaseComponent):
         self.check_note_text()
 
     def fill_fields(self, email: str):
-        self._email_input.check_visible()
         self._email_input.fill(email)
-        self._email_input.check_have_value(email)
 
     def click_subscribe_button(self):
-        self._subscribe_button.check_visible()
         self._subscribe_button.click()

@@ -4,11 +4,14 @@ from elements.base_element import BaseElement
 
 
 class CheckableMixin:
-    def set_checked(self: BaseElement, flag: bool, nth: int = 0, **kwargs):
+    def set_checked(self, flag: bool, validate_check: bool = False, nth: int = 0, **kwargs):
         locator = self.get_locator(nth, **kwargs)
         locator.set_checked(flag)
 
-    def check_checked(self: BaseElement, flag: bool, nth: int = 0, **kwargs):
+        if validate_check:
+            self.check_checked(flag, nth, **kwargs)
+
+    def check_checked(self, flag: bool, nth: int = 0, **kwargs):
         locator = self.get_locator(nth, **kwargs)
 
         if flag:

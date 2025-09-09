@@ -25,5 +25,4 @@ class SignupPage(BasePage):
         self._create_account_button.check_have_text('Create Account')
 
     def click_create_account_button(self):
-        self._create_account_button.check_visible()
         self._create_account_button.click()

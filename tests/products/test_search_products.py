@@ -2,6 +2,8 @@ import pytest
 
 from pages.home_page import HomePage
 from pages.products.products_page import ProductsPage
+from steps.home_page_steps import HomePageSteps
+from steps.products.products_page_steps import ProductsPageSteps
 from tools.api.api_client import check_products_for_query_match
 
 
@@ -31,4 +33,18 @@ class TestSearchProducts:
             products_page.list_of_product_cards_component.product_card_component.check_all(product_id)
 
         # 6 Проверить, что товары соответствуют поиску
-        check_products_for_query_match(products_page.list_of_product_cards_component.get_product_ids(), search_query)
+        check_products_for_query_match(product_ids, search_query)
+
+    @pytest.mark.parametrize('search_query', ['top'])
+    def test_successful_search_2(
+            self,
+            products_page_steps: ProductsPageSteps,
+            home_page_steps: HomePageSteps,
+            search_query: str
+    ):
+        home_page_steps.open_page()
+        home_page_steps.navbar.go_products()
+
+        products_page_steps.open_page()
+        products_page_steps.find_products(search_query=search_query)
+        products_page_steps.verify_product_cards_match_search(search_query=search_query)

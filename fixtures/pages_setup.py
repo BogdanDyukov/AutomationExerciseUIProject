@@ -1,11 +1,14 @@
 import pytest
 from playwright.sync_api import Page
 
-from pages.notifications.account_created_page import AccountCreatedPage
-from pages.notifications.account_deleted_page import AccountDeletedPage
+from pages.authentication.account_created_page import AccountCreatedPage
+from pages.authentication.account_deleted_page import AccountDeletedPage
 from pages.cart.cart_page import CartPage
+from pages.checkout.checkout_page import CheckoutPage
 from pages.interactions.contact_us_page import ContactUsPage
 from pages.home_page import HomePage
+from pages.checkout.payment_done_page import PaymentDonePage
+from pages.checkout.payment_page import PaymentPage
 from pages.products.product_details_page import ProductDetailsPage
 from pages.products.products_page import ProductsPage
 from pages.authentication.signup_or_login_page import SignupOrLoginPage
@@ -37,6 +40,41 @@ def product_details_page(chromium_page: Page) -> ProductDetailsPage:
 @pytest.fixture
 def cart_page(chromium_page: Page) -> CartPage:
     return CartPage(page=chromium_page, path=AppRoute.CART)
+
+
+@pytest.fixture
+def cart_page_with_state(chromium_page_with_state: Page) -> CartPage:
+    return CartPage(page=chromium_page_with_state, path=AppRoute.CART)
+
+
+@pytest.fixture
+def checkout_page(chromium_page: Page) -> CheckoutPage:
+    return CheckoutPage(page=chromium_page, path=AppRoute.CHECKOUT)
+
+
+@pytest.fixture
+def checkout_page_with_state(chromium_page_with_state: Page) -> CheckoutPage:
+    return CheckoutPage(page=chromium_page_with_state, path=AppRoute.CHECKOUT)
+
+
+@pytest.fixture
+def payment_page(chromium_page: Page) -> PaymentPage:
+    return PaymentPage(page=chromium_page, path=AppRoute.PAYMENT)
+
+
+@pytest.fixture
+def payment_page_with_state(chromium_page_with_state: Page) -> PaymentPage:
+    return PaymentPage(page=chromium_page_with_state, path=AppRoute.PAYMENT)
+
+
+@pytest.fixture
+def payment_done_page(chromium_page: Page) -> PaymentDonePage:
+    return PaymentDonePage(page=chromium_page, path=AppRoute.PAYMENT_DONE)
+
+
+@pytest.fixture
+def payment_done_page_with_state(chromium_page_with_state: Page) -> PaymentDonePage:
+    return PaymentDonePage(page=chromium_page_with_state, path=AppRoute.PAYMENT_DONE)
 
 
 @pytest.fixture

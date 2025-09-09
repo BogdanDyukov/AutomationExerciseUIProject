@@ -7,7 +7,7 @@ from elements.clickable.link import Link
 from elements.static.text import Text
 
 
-class TableCartRowComponent(BaseComponent):
+class ProductRowComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
@@ -26,9 +26,7 @@ class TableCartRowComponent(BaseComponent):
         self._product_quantity_button = Button(
             page, '(//a[@data-product-id="{product_id}"]/parent::td/parent::tr/td)[4]//button', 'Product Quantity'
         )
-        self._product_delete_button = Button(page, '//a[@data-product-id="{product_id}"]', 'Product Delete')
 
-    # --- Checks ---
     def check_product_image(self, product_id: int):
         self._product_image.check_visible(product_id=product_id)
 
@@ -62,9 +60,6 @@ class TableCartRowComponent(BaseComponent):
         if quantity:
             self._product_quantity_button.check_have_text(str(quantity), product_id=product_id)
 
-    def check_product_delete_button(self, product_id: int):
-        self._product_delete_button.check_visible(product_id=product_id)
-
     def check_all(
             self,
             product_id: int,
@@ -80,13 +75,6 @@ class TableCartRowComponent(BaseComponent):
         self.check_product_price_text(product_id, price)
         self.check_product_total_price_text(product_id, total_price)
         self.check_product_quantity_button(product_id, quantity)
-        self.check_product_delete_button(product_id)
 
-    # --- Actions ---
     def click_product_name_link(self, product_id: int):
-        self._product_name_link.check_visible(product_id=product_id)
         self._product_name_link.click(product_id=product_id)
-
-    def click_product_delete_button(self, product_id: int):
-        self._product_delete_button.check_visible(product_id=product_id)
-        self._product_delete_button.click(product_id=product_id)
