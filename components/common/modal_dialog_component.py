@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -21,30 +22,35 @@ class ModalDialogComponent(BaseComponent):
         self._continue_button = Button(page, f'//div[@id="{identifier}"]//button', 'Continue')
 
     def check_title(self):
-        self._title.check_visible()
-        self._title.check_have_text(self._data.title)
+        expected_text = self._data.title
+
+        with allure.step(f'Check visible modal dialog title with text "{expected_text}"'):
+            self._title.check_visible()
+            self._title.check_have_text(expected_text)
 
     def check_note_text(self):
-        self._note_text.check_visible()
-        self._note_text.check_have_text(self._data.note_text)
+        expected_text = self._data.note_text
+
+        with allure.step(f'Check visible modal dialog note text "{expected_text}"'):
+            self._note_text.check_visible()
+            self._note_text.check_have_text(expected_text)
 
     def check_navigation_link(self):
-        self._navigation_link.check_visible()
-        self._navigation_link.check_have_text(self._data.navigation_link_text)
+        expected_text = self._data.navigation_link_text
+
+        with allure.step(f'Check visible modal dialog navigation link with text "{expected_text}"'):
+            self._navigation_link.check_visible()
+            self._navigation_link.check_have_text(expected_text)
 
     def check_continue_button(self):
-        self._continue_button.check_visible()
-        self._continue_button.check_have_text(self._data.continue_button_text)
+        expected_text = self._data.continue_button_text
 
-    def check_all(self):
-        self.check_title()
-        self.check_note_text()
-        self.check_navigation_link()
-        self.check_continue_button()
+        with allure.step(f'Check visible modal dialog continue button with text "{expected_text}"'):
+            self._continue_button.check_visible()
+            self._continue_button.check_have_text(expected_text)
 
     def click_navigation_link(self):
         self._navigation_link.click()
 
     def click_continue_button(self):
         self._continue_button.click()
-

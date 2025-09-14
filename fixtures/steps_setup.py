@@ -30,6 +30,11 @@ def home_page_steps(home_page: HomePage) -> HomePageSteps:
 
 
 @pytest.fixture
+def home_page_steps_with_state(home_page_with_state: HomePage) -> HomePageSteps:
+    return HomePageSteps(home_page=home_page_with_state)
+
+
+@pytest.fixture
 def products_page_steps(products_page: ProductsPage) -> ProductsPageSteps:
     return ProductsPageSteps(products_page=products_page)
 
@@ -42,6 +47,11 @@ def product_details_page_steps(product_details_page: ProductDetailsPage) -> Prod
 @pytest.fixture
 def cart_page_steps(cart_page: CartPage) -> CartPageSteps:
     return CartPageSteps(cart_page=cart_page)
+
+
+@pytest.fixture
+def cart_page_steps_with_state(cart_page_with_state: CartPage) -> CartPageSteps:
+    return CartPageSteps(cart_page=cart_page_with_state)
 
 
 @pytest.fixture
@@ -70,10 +80,25 @@ def checkout_page_steps(checkout_page: CheckoutPage) -> CheckoutPageSteps:
 
 
 @pytest.fixture
+def checkout_page_steps_with_state(checkout_page_with_state: CheckoutPage) -> CheckoutPageSteps:
+    return CheckoutPageSteps(checkout_page=checkout_page_with_state)
+
+
+@pytest.fixture
 def payment_page_steps(payment_page: PaymentPage) -> PaymentPageSteps:
     return PaymentPageSteps(payment_page=payment_page)
 
 
 @pytest.fixture
+def payment_page_steps_with_state(payment_page_with_state: PaymentPage) -> PaymentPageSteps:
+    return PaymentPageSteps(payment_page=payment_page_with_state)
+
+
+@pytest.fixture
 def payment_done_page_steps(payment_done_page: PaymentDonePage) -> PaymentDonePageSteps:
     return PaymentDonePageSteps(payment_done_page=payment_done_page)
+
+
+@pytest.fixture
+def payment_done_page_steps_with_state(payment_done_page_with_state: PaymentDonePage) -> PaymentDonePageSteps:
+    return PaymentDonePageSteps(payment_done_page=payment_done_page_with_state)

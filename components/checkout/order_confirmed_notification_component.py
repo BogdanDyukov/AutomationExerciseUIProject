@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 from pydantic import DirectoryPath
 
@@ -13,16 +14,13 @@ class OrderConfirmedNotificationComponent(BaseNotificationComponent):
         self._download_invoice_button = Button(page, '//a[text()="Download Invoice"]', 'Download Invoice')
 
     def check_download_invoice_button(self):
-        self._download_invoice_button.check_visible()
-        self._download_invoice_button.check_have_text('Download Invoice')
+        expected_text = 'If you would like to add a comment about your order, please write it in the field below.'
 
-    def check_all(self):
-        self._check_all()
-        self.check_download_invoice_button()
+        with allure.step(f'Check visible order notification download button with text "{expected_text}"'):
+            self._download_invoice_button.check_visible()
+            self._download_invoice_button.check_have_text('Download Invoice')
 
-    # def click_download_invoice_button(self):
-    #     self._download_invoice_button.click()
-
+    @allure.step('Download invoice on the way "{file_path}"')
     def download_invoice(self, file_path: DirectoryPath):
         with self._page.expect_download() as download_info:
             self._download_invoice_button.click()

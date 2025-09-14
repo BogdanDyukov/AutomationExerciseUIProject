@@ -1,6 +1,8 @@
+import allure
+
 from pages.cart.cart_page import CartPage
 from steps.navbar_component_steps import NavbarComponentSteps
-from tools.api.api_client import get_products_info
+from tools.api.products import get_products_info
 
 
 class CartPageSteps:
@@ -20,37 +22,38 @@ class CartPageSteps:
         self._cart_page.breadcrumb_component.check_breadcrumb_home_item_link()
 
     def verify_empty_cart(self):
-        self._cart_page.empty_cart_notice_component.check_empty_cart_notification_text()
+        self._cart_page.empty_cart_notice_component.check_notification_text()
         self._cart_page.empty_cart_notice_component.check_here_link()
 
     def verify_non_empty_cart(self, product_ids_in_cart: list[int]):
         assert len(self._cart_page.table_cart_component.get_product_ids()) == len(set(product_ids_in_cart)), \
             'The number of items in the basket does not match the transmitted'
 
-        products_info = get_products_info(product_ids_in_cart)
+        with allure.step('Get the details for each product in the cart'):
+            products_info = get_products_info(product_ids_in_cart)
 
         for product_info in products_info:
             product_id = int(product_info['id'])
             product_price = int(product_info['price'].split()[1])
             product_quantity = product_ids_in_cart.count(product_id)
 
-            self._cart_page.table_cart_component.product_row_with_button_component.check_product_name_link(
+            self._cart_page.table_cart_component.product_row_with_button_component.check_name_link(
                 product_id=product_id,
                 name=product_info['name']
             )
-            self._cart_page.table_cart_component.product_row_with_button_component.check_product_category_text(
+            self._cart_page.table_cart_component.product_row_with_button_component.check_category_text(
                 product_id=product_id,
                 category=product_info['category']['usertype']['usertype'] + ' > ' + product_info['category']['category']
             )
-            self._cart_page.table_cart_component.product_row_with_button_component.check_product_price_text(
+            self._cart_page.table_cart_component.product_row_with_button_component.check_price_text(
                 product_id=product_id,
                 price=product_price
             )
-            self._cart_page.table_cart_component.product_row_with_button_component.check_product_quantity_button(
+            self._cart_page.table_cart_component.product_row_with_button_component.check_quantity_button(
                 product_id=product_id,
                 quantity=product_quantity
             )
-            self._cart_page.table_cart_component.product_row_with_button_component.check_product_total_price_text(
+            self._cart_page.table_cart_component.product_row_with_button_component.check_total_price_text(
                 product_id=product_id,
                 total_price=product_quantity * product_price
             )
@@ -72,10 +75,10 @@ class CartPageSteps:
             'The product with the transmitted id remained in the cart after delete.'
 
         if product_ids_in_cart_after_delete == 1:
-            self._cart_page.empty_cart_notice_component.check_empty_cart_notification_text()
+            self._cart_page.empty_cart_notice_component.check_notification_text()
             self._cart_page.empty_cart_notice_component.check_here_link()
             self._cart_page.reload()
-            self._cart_page.empty_cart_notice_component.check_empty_cart_notification_text()
+            self._cart_page.empty_cart_notice_component.check_notification_text()
             self._cart_page.empty_cart_notice_component.check_here_link()
 
     def proceed_to_checkout(self):

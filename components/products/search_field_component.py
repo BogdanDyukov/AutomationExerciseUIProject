@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -12,6 +13,7 @@ class SearchFieldComponent(BaseComponent):
         self._search_input = Input(page, '//input[@id="search_product"]', 'Search')
         self._submit_button = Button(page, '//button[@id="submit_search"]', 'Submit')
 
+    @allure.step('Check visible search field')
     def check_fields(self, search_query: str = ''):
         self._search_input.check_visible()
         self._search_input.check_have_value(search_query)
@@ -19,10 +21,7 @@ class SearchFieldComponent(BaseComponent):
     def check_submit_button(self):
         self._submit_button.check_visible()
 
-    def check_all(self, search_query: str = ''):
-        self.check_fields(search_query)
-        self.check_submit_button()
-
+    @allure.step('Fill search field')
     def fill_fields(self, search_query: str):
         self._search_input.fill(search_query)
 

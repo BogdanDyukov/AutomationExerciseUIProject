@@ -1,16 +1,8 @@
+import allure
 import pytest
 
 from config.settings import settings
 from models.test_user import TestUser
-from pages.authentication.account_created_page import AccountCreatedPage
-from pages.authentication.account_deleted_page import AccountDeletedPage
-from pages.authentication.signup_or_login_page import SignupOrLoginPage
-from pages.authentication.signup_page import SignupPage
-from pages.cart.cart_page import CartPage
-from pages.checkout.checkout_page import CheckoutPage
-from pages.checkout.payment_done_page import PaymentDonePage
-from pages.checkout.payment_page import PaymentPage
-from pages.home_page import HomePage
 from steps.authentication.account_created_page_steps import AccountCreatedPageSteps
 from steps.cart.cart_page_steps import CartPageSteps
 from steps.checkout.checkout_page_steps import CheckoutPageSteps
@@ -19,258 +11,53 @@ from steps.checkout.payment_done_page_steps import PaymentDonePageSteps
 from steps.checkout.payment_page_steps import PaymentPageSteps
 from steps.authentication.signup_or_login_page_steps import SignupOrLoginPageSteps
 from steps.authentication.signup_page_steps import SignupPageSteps
+from tools.allure.epics import AllureEpic
+from tools.allure.features import AllureFeature
+from tools.allure.stories import AllureStory
 
 
+@pytest.mark.regression
+@pytest.mark.checkout
+@allure.epic(AllureEpic.ORDER_PROCESSING)
+@allure.feature(AllureFeature.CHECKOUT)
+@allure.parent_suite(AllureEpic.ORDER_PROCESSING)
+@allure.suite(AllureFeature.CHECKOUT)
 class TestCheckout:
-    def test_register_while_checkout(
+    @pytest.mark.parametrize('added_product_ids', [[1, 2]])
+    @allure.story(AllureStory.SUCCESSFUL_CHECKOUT)
+    @allure.sub_suite(AllureStory.SUCCESSFUL_CHECKOUT)
+    @allure.title('Checkout with products with id: {added_product_ids}')
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_successful_checkout(
             self,
-            home_page: HomePage,
-            cart_page: CartPage,
-            signup_or_login_page: SignupOrLoginPage,
-            signup_page: SignupPage,
-            account_created_page: AccountCreatedPage,
-            checkout_page: CheckoutPage,
-            payment_page: PaymentPage,
-            payment_done_page: PaymentDonePage,
-            account_deleted_page: AccountDeletedPage,
-            new_test_user: TestUser
+            home_page_steps_with_state: HomePageSteps,
+            cart_page_steps_with_state: CartPageSteps,
+            checkout_page_steps_with_state: CheckoutPageSteps,
+            payment_page_steps_with_state: PaymentPageSteps,
+            payment_done_page_steps_with_state: PaymentDonePageSteps,
+            added_product_ids: list[int]
     ):
-        home_page.open()
-        home_page.navbar_component.check_logo_link()
-        home_page.list_of_product_cards_component.product_card_component.click_add_to_cart_button(product_id=1)
-        home_page.added_to_cart_modal_component.click_continue_button()
-        home_page.list_of_product_cards_component.product_card_component.click_add_to_cart_button(product_id=5)
-        home_page.added_to_cart_modal_component.click_navigation_link()
+        home_page_steps_with_state.open_page()
+        home_page_steps_with_state.add_products_to_cart(product_ids=added_product_ids, redirect_to_cart_page=True)
 
-        cart_page.is_open()
-        cart_page.click_proceed_to_checkout_button()
-        cart_page.checkout_modal_component.check_title()
-        cart_page.checkout_modal_component.click_navigation_link()
+        cart_page_steps_with_state.is_open_page()
+        cart_page_steps_with_state.proceed_to_checkout()
 
-        signup_or_login_page.is_open()
-        signup_or_login_page.signup_form_component.fill_fields(
-            name=new_test_user.account_information.name,
-            email=new_test_user.account_information.email
-        )
-        signup_or_login_page.signup_form_component.click_signup_button()
+        checkout_page_steps_with_state.is_open_page()
+        total_amount = checkout_page_steps_with_state.verify_order(product_ids_in_order=added_product_ids)
+        checkout_page_steps_with_state.proceed_to_order_payment()
 
-        signup_page.is_open()
-        signup_page.account_information_component.fill_fields(
-            gender=new_test_user.account_information.gender,
-            name=new_test_user.account_information.name,
-            password=new_test_user.account_information.password,
-            day_value=new_test_user.date_of_birth.birth_date,
-            month_value=new_test_user.date_of_birth.birth_month,
-            year_value=new_test_user.date_of_birth.birth_year,
-            newsletter_flag=True,
-            special_offers_flag=True
-        )
-        signup_page.address_information_component.fill_fields(
-            first_name=new_test_user.address_information.firstname,
-            last_name=new_test_user.address_information.lastname,
-            company=new_test_user.address_information.company,
-            first_address=new_test_user.address_information.address1,
-            second_address=new_test_user.address_information.address2,
-            country_value=new_test_user.address_information.country,
-            state=new_test_user.address_information.state,
-            city=new_test_user.address_information.city,
-            zipcode=new_test_user.address_information.zipcode,
-            mobile_number=new_test_user.address_information.mobile_number
-        )
-        signup_page.click_create_account_button()
+        payment_page_steps_with_state.is_open_page()
+        payment_page_steps_with_state.enter_payment_information_and_confirm_order(payment_card_info=settings.payment_card_info)
 
-        account_created_page.is_open()
-        account_created_page.notification_component.click_continue_button()
-
-        home_page.is_open()
-        home_page.navbar_component.check_logged_in_user_text(new_test_user.account_information.name)
-        home_page.navbar_component.click_cart_link()
-
-        cart_page.is_open()
-        cart_page.click_proceed_to_checkout_button()
-
-        checkout_page.is_open()
-        checkout_page.address_delivery_component.check_all(
-            first_name=new_test_user.address_information.firstname,
-            last_name=new_test_user.address_information.lastname,
-            gender=new_test_user.account_information.gender,
-            company=new_test_user.address_information.company,
-            first_address=new_test_user.address_information.address1,
-            second_address=new_test_user.address_information.address2,
-            country=new_test_user.address_information.country,
-            state=new_test_user.address_information.state,
-            city=new_test_user.address_information.city,
-            postcode=new_test_user.address_information.zipcode,
-            mobile_number=new_test_user.address_information.mobile_number
-        )
-        checkout_page.table_cart_with_total_row_component.product_row_component.check_product_name_link(
-            product_id=1,
-            name='Blue Top'
-        )
-        checkout_page.table_cart_with_total_row_component.product_row_component.check_product_name_link(
-            product_id=5,
-            name='Winter Top'
-        )
-        checkout_page.table_cart_with_total_row_component.total_row_component.check_total_price_text(total_price=1100)
-        checkout_page.order_comment_component.fill_fields(message='Comment about my order')
-        checkout_page.click_place_order_button()
-
-        payment_page.is_open()
-        payment_page.payment_form_component.fill_fields(
-            card_name=settings.payment_card_info.name,
-            card_number=settings.payment_card_info.number,
-            cvc=str(settings.payment_card_info.cvc),
-            expiry_month=settings.payment_card_info.expiry_month,
-            expiry_year=str(settings.payment_card_info.expiry_year)
-        )
-        payment_page.payment_form_component.click_pay_button()
-
-        payment_done_page.is_open(total_amount=1100)
-        payment_done_page.order_notification_component.check_all()
-
-    def test_login_before_checkout(
-            self,
-            home_page: HomePage,
-            cart_page: CartPage,
-            signup_or_login_page: SignupOrLoginPage,
-            checkout_page: CheckoutPage,
-            payment_page: PaymentPage,
-            payment_done_page: PaymentDonePage,
-            authorized_test_user: TestUser
-    ):
-        signup_or_login_page.open()
-        signup_or_login_page.login_form_component.fill_fields(
-            email=authorized_test_user.account_information.email,
-            password=authorized_test_user.account_information.password
-        )
-        signup_or_login_page.login_form_component.click_login_button()
-
-        home_page.is_open()
-        home_page.navbar_component.check_logged_in_user_text(authorized_test_user.account_information.name)
-        home_page.list_of_product_cards_component.product_card_component.click_add_to_cart_button(product_id=1)
-        home_page.added_to_cart_modal_component.click_continue_button()
-        home_page.list_of_product_cards_component.product_card_component.click_add_to_cart_button(product_id=5)
-        home_page.added_to_cart_modal_component.click_navigation_link()
-
-        cart_page.is_open()
-        cart_page.click_proceed_to_checkout_button()
-
-        checkout_page.is_open()
-        checkout_page.address_delivery_component.check_all(
-            first_name=authorized_test_user.address_information.firstname,
-            last_name=authorized_test_user.address_information.lastname,
-            gender=authorized_test_user.account_information.gender,
-            company=authorized_test_user.address_information.company,
-            first_address=authorized_test_user.address_information.address1,
-            second_address=authorized_test_user.address_information.address2,
-            country=authorized_test_user.address_information.country,
-            state=authorized_test_user.address_information.state,
-            city=authorized_test_user.address_information.city,
-            postcode=authorized_test_user.address_information.zipcode,
-            mobile_number=authorized_test_user.address_information.mobile_number
-        )
-        checkout_page.table_cart_with_total_row_component.product_row_component.check_product_name_link(
-            product_id=1,
-            name='Blue Top'
-        )
-        checkout_page.table_cart_with_total_row_component.product_row_component.check_product_name_link(
-            product_id=5,
-            name='Winter Top'
-        )
-        checkout_page.table_cart_with_total_row_component.total_row_component.check_total_price_text(total_price=1100)
-        checkout_page.order_comment_component.fill_fields(message='Comment about my order')
-        checkout_page.click_place_order_button()
-
-        payment_page.is_open()
-        payment_page.payment_form_component.fill_fields(
-            card_name=settings.payment_card_info.name,
-            card_number=settings.payment_card_info.number,
-            cvc=str(settings.payment_card_info.cvc),
-            expiry_month=settings.payment_card_info.expiry_month,
-            expiry_year=str(settings.payment_card_info.expiry_year)
-        )
-        payment_page.payment_form_component.click_pay_button()
-
-        payment_done_page.is_open(total_amount=1100)
-        payment_done_page.order_notification_component.check_all()
-        payment_done_page.order_notification_component.click_continue_button()
-
-    def test_download_invoice_after_purchase_order(
-            self,
-            signup_or_login_page: SignupOrLoginPage,
-            home_page: HomePage,
-            cart_page: CartPage,
-            checkout_page: CheckoutPage,
-            payment_page: PaymentPage,
-            payment_done_page: PaymentDonePage,
-            authorized_test_user: TestUser
-    ):
-        signup_or_login_page.open()
-        signup_or_login_page.login_form_component.fill_fields(
-            email=authorized_test_user.account_information.email,
-            password=authorized_test_user.account_information.password
-        )
-        signup_or_login_page.login_form_component.click_login_button()
-
-        home_page.is_open()
-        home_page.navbar_component.check_logged_in_user_text(authorized_test_user.account_information.name)
-        home_page.list_of_product_cards_component.product_card_component.click_add_to_cart_button(
-            product_id=1
-        )
-        home_page.added_to_cart_modal_component.click_continue_button()
-        home_page.list_of_product_cards_component.product_card_component.click_add_to_cart_button(
-            product_id=5
-        )
-        home_page.added_to_cart_modal_component.click_navigation_link()
-
-        cart_page.is_open()
-        cart_page.click_proceed_to_checkout_button()
-
-        checkout_page.is_open()
-        checkout_page.address_delivery_component.check_all(
-            first_name=authorized_test_user.address_information.firstname,
-            last_name=authorized_test_user.address_information.lastname,
-            gender=authorized_test_user.account_information.gender,
-            company=authorized_test_user.address_information.company,
-            first_address=authorized_test_user.address_information.address1,
-            second_address=authorized_test_user.address_information.address2,
-            country=authorized_test_user.address_information.country,
-            state=authorized_test_user.address_information.state,
-            city=authorized_test_user.address_information.city,
-            postcode=authorized_test_user.address_information.zipcode,
-            mobile_number=authorized_test_user.address_information.mobile_number
-        )
-        checkout_page.table_cart_with_total_row_component.product_row_component.check_product_name_link(
-            product_id=1,
-            name='Blue Top'
-        )
-        checkout_page.table_cart_with_total_row_component.product_row_component.check_product_name_link(
-            product_id=5,
-            name='Winter Top'
-        )
-        checkout_page.table_cart_with_total_row_component.total_row_component.check_total_price_text(total_price=1100)
-        checkout_page.order_comment_component.fill_fields(message='Comment about my order')
-        checkout_page.click_place_order_button()
-
-        payment_page.is_open()
-        payment_page.payment_form_component.fill_fields(
-            card_name=settings.payment_card_info.name,
-            card_number=settings.payment_card_info.number,
-            cvc=str(settings.payment_card_info.cvc),
-            expiry_month=settings.payment_card_info.expiry_month,
-            expiry_year=str(settings.payment_card_info.expiry_year)
-        )
-        payment_page.payment_form_component.click_pay_button()
-
-        payment_done_page.is_open(total_amount=1100)
-        payment_done_page.order_notification_component.check_all()
-
-        payment_done_page.order_notification_component.download_invoice(file_path=settings.downloads_dir)
-
-        payment_done_page.order_notification_component.click_continue_button()
+        payment_done_page_steps_with_state.is_open_page(total_amount=total_amount)
+        payment_done_page_steps_with_state.confirm_notification()
 
     @pytest.mark.parametrize('added_product_ids', [[1, 2]])
-    def test_register_while_checkout_2(
+    @allure.story(AllureStory.CHECKOUT_WITH_REGISTRATION)
+    @allure.title('Registration while checkout with products with id: {added_product_ids}')
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_register_while_checkout(
             self,
             home_page_steps: HomePageSteps,
             cart_page_steps: CartPageSteps,
@@ -323,7 +110,10 @@ class TestCheckout:
         payment_done_page_steps.confirm_notification()
 
     @pytest.mark.parametrize('added_product_ids', [[1, 2]])
-    def test_login_before_checkout_2(
+    @allure.story(AllureStory.CHECKOUT_AFTER_LOGIN)
+    @allure.title('Login before checkout with products with id: {added_product_ids}')
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_login_before_checkout(
             self,
             home_page_steps: HomePageSteps,
             cart_page_steps: CartPageSteps,
@@ -358,7 +148,10 @@ class TestCheckout:
         payment_done_page_steps.confirm_notification()
 
     @pytest.mark.parametrize('added_product_ids', [[1, 5]])
-    def test_download_invoice_after_purchase_order_2(
+    @allure.story(AllureStory.DOWNLOAD_INVOICE_AFTER_CHECKOUT)
+    @allure.title('Checking the download invoice after checkout with products with an id: {added_product_ids}')
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_download_invoice_after_purchase_order(
             self,
             home_page_steps: HomePageSteps,
             cart_page_steps: CartPageSteps,

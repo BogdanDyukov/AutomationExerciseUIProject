@@ -1,6 +1,7 @@
+import allure
 from playwright.sync_api import Page
 
-from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
+from components.subscription.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from components.navigation.breadcrumb_component import BreadcrumbComponent
 from components.navigation.navbar_component import NavbarComponent
 from components.checkout.payment_form_component import PaymentFormComponent
@@ -23,8 +24,12 @@ class PaymentPage(BasePage):
         self.payment_form_component: PaymentFormComponent = PaymentFormComponent(page)
         self.subscribe_to_updates_component: SubscribeToUpdatesComponent = SubscribeToUpdatesComponent(page)
 
-        self._title = Title(page, '//h2[text()="Payment"]', 'Title')
+        self._title = Title(page, '//h2[text()="Payment"]', 'Payment')
 
     def check_title(self):
-        self._title.check_visible()
-        self._title.check_have_text('Payment')
+        expected_text = 'Payment'
+
+        with allure.step(f'Check visible title with text "{expected_text}"'):
+            self._title.check_visible()
+            self._title.check_have_text(expected_text)
+

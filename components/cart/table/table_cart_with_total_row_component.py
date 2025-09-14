@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -17,5 +18,6 @@ class TableCartWithTotalRowComponent(BaseComponent):
         self.product_row_component: ProductRowComponent = ProductRowComponent(page)
         self.total_row_component: TotalRowComponent = TotalRowComponent(page)
 
+    @allure.step('Get product ids from checkout')
     def get_product_ids(self) -> list[int]:
         return extract_product_ids_by_href(self._page, self._locator_with_data_id)

@@ -1,25 +1,30 @@
+import allure
+
 from models.test_user import TestUser
 from pages.checkout.checkout_page import CheckoutPage
-from tools.api.api_client import get_products_info
+from tools.api.products import get_products_info
 
 
 class CheckoutPageSteps:
     def __init__(self, checkout_page: CheckoutPage):
         self._checkout_page = checkout_page
 
+    # @allure.step('Open checkout page')
     def open_page(self):
         self._checkout_page.open()
         self._checkout_page.breadcrumb_component.check_breadcrumb_current_item()
         self._checkout_page.breadcrumb_component.check_breadcrumb_home_item_link()
 
+    # @allure.step('Check that the checkout page is open')
     def is_open_page(self):
         self._checkout_page.is_open()
         self._checkout_page.breadcrumb_component.check_breadcrumb_current_item()
         self._checkout_page.breadcrumb_component.check_breadcrumb_home_item_link()
 
+    # @allure.step('Check delivery address')
     def verify_address(self, test_user: TestUser):
         self._checkout_page.address_delivery_component.check_title()
-        self._checkout_page.address_delivery_component.check_firstname_and_lastname_text(
+        self._checkout_page.address_delivery_component.check_gender_and_firstname_and_lastname_text(
             test_user.address_information.firstname,
             test_user.address_information.lastname,
             test_user.account_information.gender
@@ -37,11 +42,14 @@ class CheckoutPageSteps:
             test_user.address_information.mobile_number
         )
 
+    # @allure.step('Check the correctness of the order')
     def verify_order(self, product_ids_in_order: list[int]) -> int:
         assert (len(self._checkout_page.table_cart_with_total_row_component.get_product_ids())
                 == len(set(product_ids_in_order))), 'The number of items in the order does not match the transmitted'
 
-        products_info = get_products_info(product_ids_in_order)
+        with allure.step('Get the details for each product in the order'):
+            products_info = get_products_info(product_ids_in_order)
+
         total_amount = 0
 
         for product_info in products_info:
@@ -50,11 +58,11 @@ class CheckoutPageSteps:
             product_quantity = product_ids_in_order.count(product_id)
             product_total_price = product_price * product_quantity
 
-            self._checkout_page.table_cart_with_total_row_component.product_row_component.check_product_name_link(
+            self._checkout_page.table_cart_with_total_row_component.product_row_component.check_name_link(
                 product_id=product_id,
                 name=product_info['name']
             )
-            self._checkout_page.table_cart_with_total_row_component.product_row_component.check_product_category_text(
+            self._checkout_page.table_cart_with_total_row_component.product_row_component.check_category_text(
                 product_id=product_id,
                 category=product_info['category']['usertype']['usertype'] + ' > ' + product_info['category']['category']
             )
@@ -67,5 +75,6 @@ class CheckoutPageSteps:
 
         return total_amount
 
+    # @allure.step('Proceed to order payment')
     def proceed_to_order_payment(self):
         self._checkout_page.click_place_order_button()

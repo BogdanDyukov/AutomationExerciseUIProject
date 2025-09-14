@@ -4,7 +4,7 @@ from components.common.modal_dialog_component import ModalDialogComponent
 from components.products.list_of_product_cards_component import ListOfProductCardsComponent
 from components.navigation.navbar_component import NavbarComponent
 from components.products.search_field_component import SearchFieldComponent
-from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
+from components.subscription.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from data.modal_dialog import added_to_cart_modal
 from elements.media.image import Image
 from pages.base.base_page import BasePage

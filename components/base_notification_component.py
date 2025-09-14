@@ -1,4 +1,5 @@
-from playwright.async_api import Page
+import allure
+from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
 from elements.clickable.button import Button
@@ -13,27 +14,30 @@ class BaseNotificationComponent(BaseComponent):
 
         self._data = data
 
-        self._title = Title(page, f'//h2[@data-qa="{identifier}"]', 'Title')
+        self._title = Title(page, f'//h2[@data-qa="{identifier}"]', identifier)
         self._main_text = Text(page, '(//div[@class="col-sm-9 col-sm-offset-1"]/p)[1]', 'Main')
 
         self._continue_button = Button(page, '//a[@data-qa="continue-button"]', 'Continue')
 
     def check_title(self):
-        self._title.check_visible()
-        self._title.check_have_text(self._data.title)
+        expected_text = self._data.title
+        with allure.step(f'Check visible notification title with text "{expected_text}"'):
+            self._title.check_visible()
+            self._title.check_have_text(expected_text)
 
     def check_main_text(self):
-        self._main_text.check_visible()
-        self._main_text.check_have_text(self._data.main_text)
+        expected_text = self._data.main_text
+
+        with allure.step(f'Check visible notification main text "{expected_text}"'):
+            self._main_text.check_visible()
+            self._main_text.check_have_text(expected_text)
 
     def check_continue_button(self):
-        self._continue_button.check_visible()
-        self._continue_button.check_have_text('Continue')
+        expected_text = 'Continue'
 
-    def _check_all(self):
-        self.check_title()
-        self.check_main_text()
-        self.check_continue_button()
+        with allure.step(f'Check visible notification continue button with text "{expected_text}"'):
+            self._continue_button.check_visible()
+            self._continue_button.check_have_text(expected_text)
 
     def click_continue_button(self):
         self._continue_button.click()

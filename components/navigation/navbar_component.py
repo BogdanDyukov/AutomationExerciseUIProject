@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -27,71 +28,81 @@ class NavbarComponent(BaseComponent):
         self._logo_link.check_visible()
 
     def check_home_link(self):
-        self._home_link.check_visible()
-        self._home_link.check_have_text(' Home')
+        expected_text = ' Home'
+
+        with allure.step(f'Check visible navbar home link with text "{expected_text}"'):
+            self._home_link.check_visible()
+            self._home_link.check_have_text(expected_text)
 
     def check_products_link(self):
-        self._products_link.check_visible()
-        self._products_link.check_have_text(' Products')
+        expected_text = ' Products'
+
+        with allure.step(f'Check visible navbar products link with text "{expected_text}"'):
+            self._products_link.check_visible()
+            self._products_link.check_have_text(expected_text)
 
     def check_cart_link(self):
-        self._cart_link.check_visible()
-        self._cart_link.check_have_text(' Cart')
+        expected_text = ' Cart'
+
+        with allure.step(f'Check visible navbar cart link with text "{expected_text}"'):
+            self._cart_link.check_visible()
+            self._cart_link.check_have_text(expected_text)
 
     def check_test_cases_link(self):
-        self._test_cases_link.check_visible()
-        self._test_cases_link.check_have_text(' Test Cases')
+        expected_text = ' Test Cases'
+
+        with allure.step(f'Check visible navbar test cases link with text "{expected_text}"'):
+            self._test_cases_link.check_visible()
+            self._test_cases_link.check_have_text(expected_text)
 
     def check_api_testing_link(self):
-        self._api_testing_link.check_visible()
-        self._api_testing_link.check_have_text(' API Testing')
+        expected_text = ' API Testing'
+
+        with allure.step(f'Check visible navbar API testing link with text "{expected_text}"'):
+            self._api_testing_link.check_visible()
+            self._api_testing_link.check_have_text(expected_text)
 
     def check_video_tutorials_link(self):
-        self._video_tutorials_link.check_visible()
-        self._video_tutorials_link.check_have_text(' Video Tutorials')
+        expected_text = ' Video Tutorials'
+
+        with allure.step(f'Check visible navbar video tutorials link with text "{expected_text}"'):
+            self._video_tutorials_link.check_visible()
+            self._video_tutorials_link.check_have_text(expected_text)
 
     def check_contact_us_link(self):
-        self._contact_us_link.check_visible()
-        self._contact_us_link.check_have_text(' Contact us')
+        expected_text = ' Contact us'
+
+        with allure.step(f'Check visible navbar contact us link with text "{expected_text}"'):
+            self._contact_us_link.check_visible()
+            self._contact_us_link.check_have_text(expected_text)
 
     def check_signup_or_login_link(self):
-        self._signup_or_login_link.check_visible()
-        self._signup_or_login_link.check_have_text(' Signup / Login')
+        expected_text = ' Signup / Login'
+
+        with allure.step(f'Check visible navbar signup/login link with text "{expected_text}"'):
+            self._signup_or_login_link.check_visible()
+            self._signup_or_login_link.check_have_text(expected_text)
 
     def check_logout_link(self):
-        self._logout_link.check_visible()
-        self._logout_link.check_have_text(' Logout')
+        expected_text = ' Logout'
+
+        with allure.step(f'Check visible navbar logout link with text "{expected_text}"'):
+            self._logout_link.check_visible()
+            self._logout_link.check_have_text(expected_text)
 
     def check_delete_account_link(self):
-        self._delete_account_link.check_visible()
-        self._delete_account_link.check_have_text(' Delete Account')
+        expected_text = ' Delete Account'
+
+        with allure.step(f'Check visible navbar delete account link with text "{expected_text}"'):
+            self._delete_account_link.check_visible()
+            self._delete_account_link.check_have_text(expected_text)
 
     def check_logged_in_user_text(self, username: str):
-        self._logged_in_user_text.check_visible()
-        self._logged_in_user_text.check_have_text(f' Logged in as {username}')
+        expected_text = f' Logged in as {username}'
 
-    def _check_shared_links(self):
-        self.check_logo_link()
-        self.check_home_link()
-        self.check_products_link()
-        self.check_cart_link()
-        self.check_test_cases_link()
-        self.check_api_testing_link()
-        self.check_video_tutorials_link()
-        self.check_contact_us_link()
-
-    def check_all_as_guest(self):
-        self._check_shared_links()
-
-        self.check_signup_or_login_link()
-
-    def check_all_as_login_user(self, username: str):
-        self._check_shared_links()
-
-        self.check_logout_link()
-        self.check_delete_account_link()
-
-        self.check_logged_in_user_text(username)
+        with allure.step(f'Check visible navbar logged in user text with text "{expected_text}"'):
+            self._logged_in_user_text.check_visible()
+            self._logged_in_user_text.check_have_text(expected_text)
 
     def click_home_link(self):
         self._home_link.click()

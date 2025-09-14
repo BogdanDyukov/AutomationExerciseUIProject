@@ -16,8 +16,8 @@ def get_test_user() -> TestUser:
         account_information=AccountInformation(
             gender=random.choice([Gender.MR, Gender.MRS]),
             name=fake.user_name(),
-            email=f"user{unique_id}.name@gmail.com",
-            password=fake.password(length=8)
+            email=f"user.{unique_id}name@gmail.com",
+            password=f'password{unique_id}'
         ),
         date_of_birth=DateOfBirth(
             birth_date=str(fake_birth.day),

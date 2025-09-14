@@ -1,34 +1,13 @@
+import json
 from http import HTTPStatus
 from urllib.parse import urlencode
 
 import requests
-from pydantic import FilePath
+from allure_commons.types import AttachmentType
 
-from models.test_user import TestUser
 from config.settings import settings
-
-
-def check_products_for_query_match(verified_product_ids: list[int], search_query: str):
-    response = requests.post(
-        url=settings.get_base_url() + '/api/searchProduct',
-        headers={
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        data=urlencode({"search_product": search_query})
-    )
-
-    assert response.json()['responseCode'] == HTTPStatus.OK, 'Unsuccessful product search'
-
-    required_product_ids = set(map(lambda product: product['id'], response.json()['products']))
-
-    assert set(verified_product_ids) == required_product_ids, \
-        f'The product does not match the search query: "{search_query}"'
-
-
-def get_products_info(products_id: list[int]) -> list[dict]:
-    response = requests.get(url=settings.get_base_url() + '/api/productsList')
-
-    return list(filter(lambda product: product['id'] in products_id, response.json()['products']))
+from models.test_user import TestUser
+from tools.allure.attach import attach_data
 
 
 def create_user_account(test_user: TestUser):
@@ -49,6 +28,17 @@ def create_user_account(test_user: TestUser):
         data=urlencode(user_data_for_create)
     )
 
+    attach_data(
+        data=json.dumps(user_data_for_create, indent=4, ensure_ascii=False),
+        name='User creation data',
+        attachment_type=AttachmentType.JSON
+    )
+    attach_data(
+        data=json.dumps(response.json(), indent=4, ensure_ascii=False),
+        name='Create User Response',
+        attachment_type=AttachmentType.JSON
+    )
+
     assert response.json()['responseCode'] == HTTPStatus.CREATED, 'Account not created!'
 
 
@@ -66,6 +56,17 @@ def delete_user_account(test_user: TestUser):
         data=urlencode(user_data_for_delete)
     )
 
+    attach_data(
+        data=json.dumps(user_data_for_delete, indent=4, ensure_ascii=False),
+        name='User deletion data',
+        attachment_type=AttachmentType.JSON
+    )
+    attach_data(
+        data=json.dumps(response.json(), indent=4, ensure_ascii=False),
+        name='Delete User Response',
+        attachment_type=AttachmentType.JSON
+    )
+
     assert response.json()['responseCode'] == HTTPStatus.OK, 'Account not deleted!'
 
 
@@ -81,6 +82,12 @@ def is_user_exists(test_user: TestUser) -> bool:
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         data=urlencode(user_data_for_check)
+    )
+
+    attach_data(
+        data=json.dumps(response.json(), indent=4, ensure_ascii=False),
+        name='User Exists Response',
+        attachment_type=AttachmentType.JSON
     )
 
     return response.json()['responseCode'] == HTTPStatus.OK

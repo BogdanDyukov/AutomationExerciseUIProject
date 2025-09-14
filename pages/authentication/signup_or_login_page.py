@@ -3,7 +3,7 @@ from playwright.sync_api import Page
 from components.authentication.login_form_component import LoginFormComponent
 from components.navigation.navbar_component import NavbarComponent
 from components.authentication.signup_form_component import SignupFormComponent
-from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
+from components.subscription.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from pages.base.base_page import BasePage
 from config.routes import AppRoute
 

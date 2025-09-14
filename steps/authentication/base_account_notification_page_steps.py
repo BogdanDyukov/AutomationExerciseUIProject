@@ -1,4 +1,3 @@
-from components.base_notification_component import BaseNotificationComponent
 from pages.authentication.account_created_page import AccountCreatedPage
 from pages.authentication.account_deleted_page import AccountDeletedPage
 

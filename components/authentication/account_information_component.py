@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -14,7 +15,7 @@ class AccountInformationComponent(BaseComponent):
         super().__init__(page)
 
         self._title = Title(
-            page, '//div/h2[@class="title text-center"]', 'Title'
+            page, '//div/h2[@class="title text-center"]', 'Account Information'
         )
 
         self._male_gender_radio = RadioButton(page, '//input[@id="id_gender1"]', 'Male Gender')
@@ -29,9 +30,13 @@ class AccountInformationComponent(BaseComponent):
         self._special_offers_checkbox = Checkbox(page, '//input[@id="optin"]', 'Special Offers')
 
     def check_title(self):
-        self._title.check_visible()
-        self._title.check_have_text('Enter Account Information')
+        expected_title = 'Enter Account Information'
 
+        with allure.step(f'Check visible account information title with text"{expected_title}"'):
+            self._title.check_visible()
+            self._title.check_have_text(expected_title)
+
+    @allure.step('Check visible account information fields')
     def check_fields(
             self,
             name: str,
@@ -81,31 +86,7 @@ class AccountInformationComponent(BaseComponent):
         self._special_offers_checkbox.check_visible()
         self._special_offers_checkbox.check_checked(special_offers_flag)
 
-    def check_all(
-        self,
-        name: str,
-        email: str,
-        gender: Gender | None = None,
-        password: str = '',
-        day_value: str = '',
-        month_value: str = '',
-        year_value: str = '',
-        newsletter_flag: bool = False,
-        special_offers_flag: bool = False
-    ):
-        self.check_title()
-        self.check_fields(
-            name=name,
-            email=email,
-            gender=gender,
-            password=password,
-            day_value=day_value,
-            month_value=month_value,
-            year_value=year_value,
-            newsletter_flag=newsletter_flag,
-            special_offers_flag=special_offers_flag
-        )
-
+    @allure.step('Fill account information fields')
     def fill_fields(
             self,
             name: str,

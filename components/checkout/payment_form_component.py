@@ -1,9 +1,9 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
 from elements.clickable.button import Button
 from elements.fields.input import Input
-from elements.static.text import Text
 
 
 class PaymentFormComponent(BaseComponent):
@@ -18,6 +18,7 @@ class PaymentFormComponent(BaseComponent):
 
         self._pay_button = Button(page, '//button[@data-qa="pay-button"]', 'Pay')
 
+    @allure.step('Check visible payment form fields')
     def check_fields(
             self,
             card_name: str = '',
@@ -42,20 +43,13 @@ class PaymentFormComponent(BaseComponent):
         self._expiry_year_input.check_have_value(expiry_year)
 
     def check_pay_button(self):
-        self._pay_button.check_visible()
-        self._pay_button.check_have_text('Pay and Confirm Order')
+        expected_text = 'Pay and Confirm Order'
 
-    def check_all(
-            self,
-            card_name: str = '',
-            card_number: str = '',
-            cvc: str = '',
-            expiry_month: str = '',
-            expiry_year: str = ''
-    ):
-        self.check_fields(card_name, card_number, cvc, expiry_month, expiry_year)
-        self.check_pay_button()
+        with allure.step(f'Check visible payment form pay button with text "{expected_text}"'):
+            self._pay_button.check_visible()
+            self._pay_button.check_have_text(expected_text)
 
+    @allure.step('Fill payment form fields')
     def fill_fields(
             self,
             card_name: str,

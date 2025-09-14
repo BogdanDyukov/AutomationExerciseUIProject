@@ -1,5 +1,7 @@
+import allure
+
 from pages.products.product_details_page import ProductDetailsPage
-from tools.api.api_client import get_products_info
+from tools.api.products import get_products_info
 
 
 class ProductDetailsPageSteps:
@@ -34,8 +36,10 @@ class ProductDetailsPageSteps:
             availability: str = ' In Stock',
             condition: str = ' New'
     ):
-        product_info = get_products_info([product_id])[0]
-        self._product_details_page.product_information_component.check_product_name_title(name=product_info['name'])
+        with allure.step('Get the details for each product in the order'):
+            product_info = get_products_info([product_id])[0]
+
+        self._product_details_page.product_information_component.check_name_title(name=product_info['name'])
         self._product_details_page.product_information_component.check_category_text(
             category=product_info['category']['usertype']['usertype'] + ' > ' + product_info['category']['category']
         )

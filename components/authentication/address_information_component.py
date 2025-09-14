@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -11,7 +12,7 @@ class AddressInformationComponent(BaseComponent):
         super().__init__(page)
 
         self._title = Title(
-            page, '//div/form/h2[@class="title text-center"]', 'Address Information Title'
+            page, '//div/form/h2[@class="title text-center"]', 'Address Information'
         )
 
         self._first_name_input = Input(page, '//input[@data-qa="first_name"]', 'First Name')
@@ -26,9 +27,13 @@ class AddressInformationComponent(BaseComponent):
         self._mobile_number_input = Input(page, '//input[@data-qa="mobile_number"]', 'Mobile Number')
 
     def check_title(self):
-        self._title.check_visible()
-        self._title.check_have_text('Address Information')
+        expected_title = 'Address Information'
 
+        with allure.step(f'Check visible address information title with text "{expected_title}"'):
+            self._title.check_visible()
+            self._title.check_have_text(expected_title)
+
+    @allure.step('Check visible address information fields')
     def check_fields(
             self,
             first_name: str = '',
@@ -72,33 +77,7 @@ class AddressInformationComponent(BaseComponent):
         self._mobile_number_input.check_visible()
         self._mobile_number_input.check_have_value(mobile_number)
 
-    def check_all(
-            self,
-            first_name: str = '',
-            last_name: str = '',
-            company: str = '',
-            first_address: str = '',
-            second_address: str = '',
-            country_value: str = 'India',
-            state: str = '',
-            city: str = '',
-            zipcode: str = '',
-            mobile_number: str = ''
-    ):
-        self.check_title()
-        self.check_fields(
-            first_name=first_name,
-            last_name=last_name,
-            company=company,
-            first_address=first_address,
-            second_address=second_address,
-            country_value=country_value,
-            state=state,
-            city=city,
-            zipcode=zipcode,
-            mobile_number=mobile_number
-        )
-
+    @allure.step('Fill address information fields')
     def fill_fields(
             self,
             first_name: str,

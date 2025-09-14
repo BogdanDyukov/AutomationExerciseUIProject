@@ -2,7 +2,7 @@ from playwright.sync_api import Page
 
 from components.navigation.navbar_component import NavbarComponent
 from components.authentication.account_notification_component import AccountNotificationComponent
-from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
+from components.subscription.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from data.notifications import account_deleted_notification
 from pages.base.base_page import BasePage
 from config.routes import AppRoute

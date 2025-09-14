@@ -1,5 +1,7 @@
+import allure
+
 from pages.products.products_page import ProductsPage
-from tools.api.api_client import check_products_for_query_match
+from tools.api.products import check_products_for_query_match
 
 
 class ProductsPageSteps:

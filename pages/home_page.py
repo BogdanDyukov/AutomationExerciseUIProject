@@ -2,7 +2,7 @@ from playwright.sync_api import Page
 
 from components.common.modal_dialog_component import ModalDialogComponent
 from components.navigation.navbar_component import NavbarComponent
-from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
+from components.subscription.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from components.products.list_of_product_cards_component import ListOfProductCardsComponent
 from data.modal_dialog import added_to_cart_modal
 from elements.clickable.link import Link

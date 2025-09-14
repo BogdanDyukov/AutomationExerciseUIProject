@@ -6,5 +6,5 @@ from elements.base_element import BaseElement
 # Подсказка к полю ввода, чекбоксу/радиокнопке или просто краткая характеристика рядом с элементом
 class Label(BaseElement):
     @property
-    def type_of(self) -> str:
+    def _type_of(self) -> str:
         return "text"

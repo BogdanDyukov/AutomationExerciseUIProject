@@ -4,7 +4,6 @@ from enum import Enum
 class AppRoute(str, Enum):
     HOME = './'
     PRODUCTS = './products'
-    # PRODUCTS_SEARCH = '/products?search={search_query}'
     PRODUCT_DETAILS = '/product_details/{product_id}'
     CART = './view_cart'
     CHECKOUT = './checkout'

@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -16,7 +17,7 @@ class ContactFormComponent(BaseComponent):
         self._notification_text = Text(
             page, '//div[text()="Below contact form is for testing purpose."]', 'Notification'
         )
-        self._title = Title(page, '//h2[text()="Get In Touch"]', 'Title')
+        self._title = Title(page, '//h2[text()="Get In Touch"]', 'Get In Touch')
 
         self._name_input = Input(page, '//input[@data-qa="name"]', 'Name')
         self._email_input = Input(page, '//input[@data-qa="email"]', 'Email')
@@ -30,13 +31,20 @@ class ContactFormComponent(BaseComponent):
         self._success_submit_alert = Text(page, '(//div[contains(text(), "Success!")])[1]', 'Success Alert')
 
     def check_notification_text(self):
-        self._notification_text.check_visible()
-        self._notification_text.check_have_text('Note: Below contact form is for testing purpose.')
+        expected_text = 'Note: Below contact form is for testing purpose.'
+
+        with allure.step(f'Check visible contact form notification text "{expected_text}"'):
+            self._notification_text.check_visible()
+            self._notification_text.check_have_text(expected_text)
 
     def check_title(self):
-        self._title.check_visible()
-        self._title.check_have_text('Get In Touch')
+        expected_text = 'Get In Touch'
 
+        with allure.step(f'Check visible contact form title with text "{expected_text}"'):
+            self._title.check_visible()
+            self._title.check_have_text(expected_text)
+
+    @allure.step('Check visible contact form fields')
     def check_fields(
             self,
             name: str = '',
@@ -63,36 +71,27 @@ class ContactFormComponent(BaseComponent):
             self._upload_input.check_have_value(file_path)
 
     def check_submit_button(self):
-        self._upload_input.check_visible()
-        self._upload_input.check_have_text('Submit')
+        expected_text = 'Submit'
+
+        with allure.step(f'Check visible contact form submit button with text "{expected_text}"'):
+            self._submit_button.check_visible()
+            self._submit_button.check_have_text(expected_text)
 
     def check_home_button(self):
-        self._home_button.check_visible()
-        self._home_button.check_have_text(' Home')
+        expected_text = ' Home'
+
+        with allure.step(f'Check visible contact form home button with text "{expected_text}"'):
+            self._home_button.check_visible()
+            self._home_button.check_have_text(expected_text)
 
     def check_success_submit_alert(self):
-        self._success_submit_alert.check_visible()
-        self._success_submit_alert.check_have_text('Success! Your details have been submitted successfully.')
+        expected_text = 'Success! Your details have been submitted successfully.'
 
-    def check_all_before_submit(
-            self,
-            name: str = '',
-            email: str = '',
-            subject: str = '',
-            message: str = '',
-            file_path: str | None = None
-    ):
-        self.check_title()
-        self.check_notification_text()
-        self.check_fields(name, email, subject, message, file_path)
-        self.check_submit_button()
+        with allure.step(f'Check visible contact form success submit alert with text "{expected_text}"'):
+            self._success_submit_alert.check_visible()
+            self._success_submit_alert.check_have_text(expected_text)
 
-    def check_all_after_submit(self):
-        self.check_title()
-        self.check_notification_text()
-        self.check_home_button()
-        self.check_success_submit_alert()
-
+    @allure.step('Fill contact form fields')
     def fill_fields(
             self,
             email: str,

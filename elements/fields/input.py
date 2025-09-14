@@ -5,5 +5,5 @@ from elements.mixins.fillable_mixin import FillableMixin
 
 class Input(BaseElement, DisableableMixin, FillableMixin):
     @property
-    def type_of(self) -> str:
+    def _type_of(self) -> str:
         return "input"

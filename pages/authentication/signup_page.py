@@ -1,9 +1,10 @@
+import allure
 from playwright.sync_api import Page
 
 from components.authentication.account_information_component import AccountInformationComponent
 from components.authentication.address_information_component import AddressInformationComponent
 from components.navigation.navbar_component import NavbarComponent
-from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
+from components.subscription.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from elements.clickable.button import Button
 from pages.base.base_page import BasePage
 from config.routes import AppRoute
@@ -21,8 +22,11 @@ class SignupPage(BasePage):
         self._create_account_button = Button(page, '//button[@data-qa="create-account"]', 'Create Account')
 
     def check_create_account_button(self):
-        self._create_account_button.check_visible()
-        self._create_account_button.check_have_text('Create Account')
+        expected_text = 'Create Account'
+
+        with allure.step(f'Check visible create account button with text "{expected_text}"'):
+            self._create_account_button.check_visible()
+            self._create_account_button.check_have_text(expected_text)
 
     def click_create_account_button(self):
         self._create_account_button.click()

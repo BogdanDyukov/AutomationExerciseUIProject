@@ -1,6 +1,6 @@
 from playwright.sync_api import Page
 
-from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
+from components.subscription.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from components.navigation.navbar_component import NavbarComponent
 from components.checkout.order_confirmed_notification_component import OrderConfirmedNotificationComponent
 from config.routes import AppRoute

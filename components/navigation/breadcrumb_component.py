@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -17,16 +18,16 @@ class BreadcrumbComponent(BaseComponent):
         self._root_link = Link(page, f'//a[text()="{identifier}"]', 'Root')
 
     def check_breadcrumb_current_item(self):
-        self._current_page_item.check_visible()
-        self._current_page_item.check_have_text(self._data.current_page_item_text)
+        expected_text = self._data.current_page_item_text
+        with allure.step(f'Check visible breadcrumb current item with text "{expected_text}"'):
+            self._current_page_item.check_visible()
+            self._current_page_item.check_have_text(expected_text)
 
     def check_breadcrumb_home_item_link(self):
-        self._root_link.check_visible()
-        self._root_link.check_have_text(self._data.root_link_name_text)
-
-    def check_all(self):
-        self.check_breadcrumb_current_item()
-        self.check_breadcrumb_home_item_link()
+        expected_text = self._data.root_link_name_text
+        with allure.step(f'Check visible breadcrumb home item link with text "{expected_text}"'):
+            self._root_link.check_visible()
+            self._root_link.check_have_text(expected_text)
 
     def click_breadcrumb_home_item_link(self):
         self._root_link.click()

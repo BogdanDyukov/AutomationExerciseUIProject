@@ -1,10 +1,11 @@
+import allure
 from playwright.sync_api import Page
 
 from components.cart.empty_cart_view_component import EmptyCartViewComponent
 from components.common.modal_dialog_component import ModalDialogComponent
 from components.navigation.breadcrumb_component import BreadcrumbComponent
 from components.navigation.navbar_component import NavbarComponent
-from components.interactions.subscribe_to_updates_component import SubscribeToUpdatesComponent
+from components.subscription.subscribe_to_updates_component import SubscribeToUpdatesComponent
 from components.cart.table.table_cart_component import TableCartComponent
 from data.breadcrumb import cart_page_breadcrumb
 from data.modal_dialog import checkout_modal
@@ -36,8 +37,11 @@ class CartPage(BasePage):
         self._proceed_to_checkout_button = Button(page, '//a[text()="Proceed To Checkout"]', 'Proceed To Checkout')
 
     def check_proceed_to_checkout_button(self):
-        self._proceed_to_checkout_button.check_visible()
-        self._proceed_to_checkout_button.check_have_text('Proceed To Checkout')
+        expected_text = 'Proceed To Checkout'
+
+        with allure.step(f'Check visible proceed to checkout button with text "{expected_text}"'):
+            self._proceed_to_checkout_button.check_visible()
+            self._proceed_to_checkout_button.check_have_text(expected_text)
 
     def click_proceed_to_checkout_button(self):
         self._proceed_to_checkout_button.click()

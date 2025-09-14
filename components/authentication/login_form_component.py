@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
@@ -11,7 +12,7 @@ class LoginFormComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self._title = Title(page, '//div[@class="login-form"]/h2', 'Title')
+        self._title = Title(page, '//div[@class="login-form"]/h2', 'Login')
 
         self._email_input = Input(page, '//input[@data-qa="login-email"]', 'Email')
         self._password_input = Input(page, '//input[@data-qa="login-password"]', 'Password')
@@ -21,9 +22,13 @@ class LoginFormComponent(BaseComponent):
         self._incorrect_inputs_alert = Text(page, '//form[@action="/login"]/p', 'Incorrect Inputs')
 
     def check_title(self):
-        self._title.check_visible()
-        self._title.check_have_text('Login to your account')
+        expected_title = 'Login to your account'
 
+        with allure.step(f'Check visible login form title with text "{expected_title}"'):
+            self._title.check_visible()
+            self._title.check_have_text(expected_title)
+
+    @allure.step('Check visible login form fields')
     def check_fields(self, email: str = '', password: str = ''):
         self._email_input.check_visible()
         self._email_input.check_have_value(email)
@@ -32,26 +37,20 @@ class LoginFormComponent(BaseComponent):
         self._password_input.check_have_value(password)
 
     def check_login_button(self):
-        self._login_button.check_visible()
-        self._login_button.check_have_text('Login')
+        expected_text = 'Login'
+
+        with allure.step(f'Check visible login button with text "{expected_text}"'):
+            self._login_button.check_visible()
+            self._login_button.check_have_text(expected_text)
 
     def check_incorrect_inputs_alert(self):
-        self._incorrect_inputs_alert.check_visible()
-        self._incorrect_inputs_alert.check_have_text('Your email or password is incorrect!')
+        expected_text = 'Your email or password is incorrect!'
 
-    def check_all(
-            self,
-            email: str = '',
-            password: str = '',
-            incorrect_email_or_password_text_visible: bool = False):
-        self.check_title()
-        self.check_fields(email, password)
+        with allure.step(f'Check visible incorrect inputs alert with text "{expected_text}"'):
+            self._incorrect_inputs_alert.check_visible()
+            self._incorrect_inputs_alert.check_have_text(expected_text)
 
-        if incorrect_email_or_password_text_visible:
-            self.check_incorrect_inputs_alert()
-
-        self.check_login_button()
-
+    @allure.step('Fill login form fields')
     def fill_fields(self, email: str, password: str):
         self._email_input.fill(email)
         self._password_input.fill(password)
