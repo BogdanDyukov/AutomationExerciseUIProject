@@ -1,10 +1,12 @@
 import allure
+from allure_commons.types import AttachmentType
 from playwright.sync_api import Page
 from pydantic import DirectoryPath
 
 from components.base_notification_component import BaseNotificationComponent
 from elements.clickable.button import Button
 from models.notification import Notification
+from tools.allure.attach import attach_file
 
 
 class OrderConfirmedNotificationComponent(BaseNotificationComponent):
@@ -29,3 +31,5 @@ class OrderConfirmedNotificationComponent(BaseNotificationComponent):
 
         full_path = str(file_path) + "/" + download.suggested_filename
         download.save_as(full_path)
+
+        attach_file(file_path=full_path, name='Invoice', attachment_type=AttachmentType.TEXT)

@@ -7,7 +7,7 @@ from allure_commons.types import AttachmentType
 
 from config.settings import settings
 from models.test_user import TestUser
-from tools.allure.attach import attach_data
+from tools.allure.attach import attach_content
 
 
 def create_user_account(test_user: TestUser):
@@ -28,13 +28,13 @@ def create_user_account(test_user: TestUser):
         data=urlencode(user_data_for_create)
     )
 
-    attach_data(
-        data=json.dumps(user_data_for_create, indent=4, ensure_ascii=False),
+    attach_content(
+        content=json.dumps(user_data_for_create, indent=4, ensure_ascii=False),
         name='User creation data',
         attachment_type=AttachmentType.JSON
     )
-    attach_data(
-        data=json.dumps(response.json(), indent=4, ensure_ascii=False),
+    attach_content(
+        content=json.dumps(response.json(), indent=4, ensure_ascii=False),
         name='Create User Response',
         attachment_type=AttachmentType.JSON
     )
@@ -56,13 +56,13 @@ def delete_user_account(test_user: TestUser):
         data=urlencode(user_data_for_delete)
     )
 
-    attach_data(
-        data=json.dumps(user_data_for_delete, indent=4, ensure_ascii=False),
+    attach_content(
+        content=json.dumps(user_data_for_delete, indent=4, ensure_ascii=False),
         name='User deletion data',
         attachment_type=AttachmentType.JSON
     )
-    attach_data(
-        data=json.dumps(response.json(), indent=4, ensure_ascii=False),
+    attach_content(
+        content=json.dumps(response.json(), indent=4, ensure_ascii=False),
         name='Delete User Response',
         attachment_type=AttachmentType.JSON
     )
@@ -82,12 +82,6 @@ def is_user_exists(test_user: TestUser) -> bool:
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         data=urlencode(user_data_for_check)
-    )
-
-    attach_data(
-        data=json.dumps(response.json(), indent=4, ensure_ascii=False),
-        name='User Exists Response',
-        attachment_type=AttachmentType.JSON
     )
 
     return response.json()['responseCode'] == HTTPStatus.OK

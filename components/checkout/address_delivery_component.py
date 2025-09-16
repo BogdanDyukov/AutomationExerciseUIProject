@@ -31,11 +31,11 @@ class AddressDeliveryComponent(BaseComponent):
             self._title.check_visible()
             self._title.check_have_text(expected_text)
 
-    @allure.step('Check visible address delivery gender "{gender}" '
+    @allure.step('Check visible address delivery gender '
                  'and firstname "{first_name}" and lastname "last_name" text')
     def check_gender_and_firstname_and_lastname_text(self, first_name: str, last_name: str, gender: Gender):
         self._gender_and_firstname_and_lastname_text.check_visible()
-        self._gender_and_firstname_and_lastname_text.check_have_text(f'{gender}. {first_name} {last_name}')
+        self._gender_and_firstname_and_lastname_text.check_have_text(f'{gender.value}. {first_name} {last_name}')
 
     @allure.step('Check visible address delivery company text "{company}"')
     def check_company_text(self, company: str):

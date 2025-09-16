@@ -1,0 +1,9 @@
+services:
+   run-tests:
+     image: automationexercise-image
+     container_name: automationexercise_container
+#     build:
+#       context: .
+     volumes:
+      - ./:/usr/workspace
+     command: bash -c "pytest --alluredir=./artifacts/allure-results"

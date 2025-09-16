@@ -3,7 +3,7 @@ from playwright.sync_api import Playwright
 from pydantic import FilePath
 
 from config.settings import Browser, settings
-from tools.allure.attach import attach_data
+from tools.allure.attach import attach_file
 from tools.playwright.mocks import abort_ads_script
 
 
@@ -29,5 +29,5 @@ def initialize_playwright_page(
     context.tracing.stop(path=settings.tracing_dir.joinpath(f'{test_name}.zip'))
     browser.close()
 
-    attach_data(settings.tracing_dir.joinpath(f'{test_name}.zip'), name='trace', extension='zip')
-    attach_data(page.video.path(), name='video', attachment_type=allure.attachment_type.WEBM)
+    attach_file(file_path=settings.tracing_dir.joinpath(f'{test_name}.zip'), name='trace', extension='zip')
+    attach_file(file_path=page.video.path(), name='video', attachment_type=allure.attachment_type.WEBM)

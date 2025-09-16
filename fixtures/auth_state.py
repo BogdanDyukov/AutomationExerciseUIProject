@@ -14,31 +14,31 @@ from tools.playwright.mocks import abort_ads_script
 @pytest.fixture(scope='session', autouse=True)
 def initialize_browser_state(playwright: Playwright):
     test_user = None
-    with FileLock(str(settings.browser_state_file) + ".lock"):
-        if settings.browser_state_file.read_text() == '':
-            browser = playwright.chromium.launch(headless=settings.headless)
-            context = browser.new_context(base_url=settings.get_base_url())
-            page = context.new_page()
-            abort_ads_script(page)
 
-            test_user = get_test_user()
-            create_user_account(test_user)
+    try:
+        with FileLock(str(settings.browser_state_file) + ".lock"):
+            if settings.browser_state_file.read_text() == '':
+                browser = playwright.chromium.launch(headless=settings.headless)
+                context = browser.new_context(base_url=settings.get_base_url())
+                page = context.new_page()
+                abort_ads_script(page)
 
-            signup_or_login_page_steps = SignupOrLoginPageSteps(
-                signup_or_login_page=SignupOrLoginPage(page=page, path=AppRoute.SIGNUP_OR_LOGIN)
-            )
+                test_user = get_test_user()
+                create_user_account(test_user)
 
-            signup_or_login_page_steps.open_page()
-            signup_or_login_page_steps.login_to_account(
-                email=test_user.account_information.email,
-                password=test_user.account_information.password
-            )
+                signup_or_login_page_steps = SignupOrLoginPageSteps(
+                    signup_or_login_page=SignupOrLoginPage(page=page, path=AppRoute.SIGNUP_OR_LOGIN)
+                )
 
-            context.storage_state(path=settings.browser_state_file)
+                signup_or_login_page_steps.open_page()
+                signup_or_login_page_steps.login_to_account(
+                    email=test_user.account_information.email,
+                    password=test_user.account_information.password
+                )
 
-            browser.close()
-
-    yield
-
-    if test_user:
-        delete_user_account(test_user)
+                context.storage_state(path=settings.browser_state_file)
+                browser.close()
+        yield
+    finally:
+        if test_user:
+            delete_user_account(test_user)

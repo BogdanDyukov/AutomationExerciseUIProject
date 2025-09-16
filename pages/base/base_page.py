@@ -17,12 +17,12 @@ class BasePage:
         self.subscribe_to_updates_component: SubscribeToUpdatesComponent = SubscribeToUpdatesComponent(page)
 
     def open(self):
-        with allure.step(f'Opening the url "{self._path}"'):
-            self._page.goto(self._path)
+        with allure.step(f'Opening the url "{self._path.value}"'):
+            self._page.goto(self._path.value)
 
     def is_open(self):
-        with allure.step(f'Checking that page has a url "{self._path}"'):
-            expect(self._page).to_have_url(re.compile(f".*{self._path}$"))
+        with allure.step(f'Checking that page has a url "{self._path.value}"'):
+            expect(self._page).to_have_url(re.compile(f".*{self._path.value}$"))
             self._page.wait_for_load_state()
 
     def reload(self):

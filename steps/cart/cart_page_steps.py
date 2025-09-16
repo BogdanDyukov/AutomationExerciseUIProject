@@ -1,5 +1,3 @@
-import allure
-
 from pages.cart.cart_page import CartPage
 from steps.navbar_component_steps import NavbarComponentSteps
 from tools.api.products import get_products_info
@@ -29,8 +27,7 @@ class CartPageSteps:
         assert len(self._cart_page.table_cart_component.get_product_ids()) == len(set(product_ids_in_cart)), \
             'The number of items in the basket does not match the transmitted'
 
-        with allure.step('Get the details for each product in the cart'):
-            products_info = get_products_info(product_ids_in_cart)
+        products_info = get_products_info(product_ids_in_cart)
 
         for product_info in products_info:
             product_id = int(product_info['id'])

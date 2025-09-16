@@ -8,11 +8,13 @@ from tools.api.users import create_user_account, delete_user_account, is_user_ex
 @pytest.fixture
 def authorized_test_user() -> TestUser:
     test_user = get_test_user()
-    create_user_account(test_user)
 
-    yield test_user
-
-    delete_user_account(test_user)
+    try:
+        create_user_account(test_user)
+        yield test_user
+    finally:
+        if is_user_exists(test_user):
+            delete_user_account(test_user)
 
 
 @pytest.fixture
