@@ -1,6 +1,6 @@
 services:
    run-tests:
-     image: automationexercise-image
+     image: automationexercise-image:latest
      container_name: automationexercise_container
 #     build:
 #       context: .
