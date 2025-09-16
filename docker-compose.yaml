@@ -6,4 +6,4 @@ services:
 #       context: .
      volumes:
       - ./:/usr/workspace
-     command: bash -c "pytest --alluredir=./artifacts/allure-results"
+     command: bash -c "pytest --alluredir=allure-results"

@@ -58,7 +58,7 @@ class Settings(BaseSettings):
         browser_state_file.touch(exist_ok=True)
         browser_state_file.write_text('')
 
-        allure_results_dir = DirectoryPath('./artifacts/allure-results')
+        allure_results_dir = DirectoryPath('./allure-results')
         allure_results_dir.mkdir(exist_ok=True)
 
         downloads_dir = DirectoryPath('./artifacts/downloads')
