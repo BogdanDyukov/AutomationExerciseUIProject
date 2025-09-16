@@ -25,9 +25,6 @@ class TestContactUs:
             home_page_with_state: HomePage,
             contact_us_page_with_state: ContactUsPage
     ):
-        # Для корректной обработки диалогового окна необходимо дожидаться загрузки скриптов (где вызывается alert)
-        # Если этого не сделать, то при нажатии на кнопку alert просто не будет вызван
-        # В is_open я добавил соответствующее ожидание
         contact_us_page_with_state.open()
         contact_us_page_with_state.contact_form_component.check_title()
         contact_us_page_with_state.contact_form_component.fill_fields(

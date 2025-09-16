@@ -42,7 +42,6 @@ class Settings(BaseSettings):
     downloads_dir: DirectoryPath
     tracing_dir: DirectoryPath
     videos_dir: DirectoryPath
-
     payment_card_info: PaymentCardInfo
 
     @classmethod
