@@ -1,0 +1,19 @@
+{
+    "title": "Mrs",
+    "name": "obolton",
+    "email": "user.1name@gmail.com",
+    "password": "password1",
+    "birth_date": "8",
+    "birth_month": "7",
+    "birth_year": "2002",
+    "firstname": "Scott",
+    "lastname": "Bishop",
+    "company": "Williams-Garcia",
+    "address1": "891 Terry Vista\nEast David, MN 47874",
+    "address2": "51420 Williams Shoal Suite 957\nLake Juliebury, FL 69593",
+    "country": "Israel",
+    "state": "Iowa",
+    "city": "North Melissa",
+    "zipcode": "10453",
+    "mobile_number": "932-968-9499"
+}
