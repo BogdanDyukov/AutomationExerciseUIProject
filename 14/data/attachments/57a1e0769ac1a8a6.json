@@ -1,0 +1,19 @@
+{
+    "title": "Mr",
+    "name": "jasonbecker",
+    "email": "user.10name@gmail.com",
+    "password": "password10",
+    "birth_date": "24",
+    "birth_month": "7",
+    "birth_year": "1943",
+    "firstname": "Gary",
+    "lastname": "Anderson",
+    "company": "Morris, Russell and Martin",
+    "address1": "65572 Castro Summit Suite 306\nWest Phillipland, NE 64046",
+    "address2": "0052 Lopez Island Apt. 622\nWilliamchester, VI 06398",
+    "country": "Australia",
+    "state": "Louisiana",
+    "city": "South David",
+    "zipcode": "96841",
+    "mobile_number": "814.925.4068"
+}
