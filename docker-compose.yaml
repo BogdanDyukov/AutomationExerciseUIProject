@@ -4,4 +4,4 @@ services:
      container_name: automationexercise_container
      volumes:
       - ./:/usr/workspace
-     command: bash -c "pytest -n 3 --alluredir=allure-results"
+     command: bash -c "pytest -n 2 --alluredir=allure-results"
