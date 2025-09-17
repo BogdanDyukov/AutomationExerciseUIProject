@@ -2,8 +2,6 @@ services:
    run-tests:
      image: automationexercise-image:latest
      container_name: automationexercise_container
-#     build:
-#       context: .
      volumes:
       - ./:/usr/workspace
-     command: bash -c "pytest --alluredir=allure-results"
+     command: bash -c "pytest -n 3 --alluredir=allure-results"
