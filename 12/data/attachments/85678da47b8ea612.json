@@ -1,0 +1,19 @@
+{
+    "title": "Mr",
+    "name": "evanscharles",
+    "email": "user.9name@gmail.com",
+    "password": "password9",
+    "birth_date": "4",
+    "birth_month": "8",
+    "birth_year": "1995",
+    "firstname": "Emily",
+    "lastname": "Johnson",
+    "company": "Rose, Williams and Smith",
+    "address1": "2963 Thomas Pike\nMartinton, IL 40748",
+    "address2": "63369 Hannah Hill\nHarrisland, AS 21869",
+    "country": "United States",
+    "state": "New Mexico",
+    "city": "Port Nicholasberg",
+    "zipcode": "36461",
+    "mobile_number": "237.963.2464"
+}
