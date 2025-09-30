@@ -1,0 +1,19 @@
+{
+    "title": "Mr",
+    "name": "williamnguyen",
+    "email": "user.1name@gmail.com",
+    "password": "password1",
+    "birth_date": "8",
+    "birth_month": "8",
+    "birth_year": "2006",
+    "firstname": "Marissa",
+    "lastname": "Harris",
+    "company": "Gentry, Greer and Cox",
+    "address1": "04096 Brown Forest Apt. 134\nMyersmouth, SC 76517",
+    "address2": "354 Aaron Ferry Apt. 941\nWest Travis, NE 85320",
+    "country": "United States",
+    "state": "Alabama",
+    "city": "Ericastad",
+    "zipcode": "62463",
+    "mobile_number": "808.542.5656"
+}
