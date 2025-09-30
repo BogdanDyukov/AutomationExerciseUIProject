@@ -1,0 +1,19 @@
+{
+    "title": "Mr",
+    "name": "jwilliams",
+    "email": "user.4name@gmail.com",
+    "password": "password4",
+    "birth_date": "24",
+    "birth_month": "3",
+    "birth_year": "1976",
+    "firstname": "Matthew",
+    "lastname": "Hamilton",
+    "company": "Reid-Morales",
+    "address1": "91079 Frazier Mountain\nAdamburgh, LA 60682",
+    "address2": "84495 Kane Trail Suite 190\nPort Kellyshire, ME 86036",
+    "country": "Australia",
+    "state": "Maryland",
+    "city": "Fisherside",
+    "zipcode": "33491",
+    "mobile_number": "792.916.0217"
+}
