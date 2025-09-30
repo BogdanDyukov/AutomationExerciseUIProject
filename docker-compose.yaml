@@ -1,5 +1,6 @@
 services:
    run-tests:
+     build: .
      image: automationexercise-image:latest
      container_name: automationexercise_container
      volumes:
